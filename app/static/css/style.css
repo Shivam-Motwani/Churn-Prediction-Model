@@ -1,0 +1,179 @@
+/* Custom CSS for Churn Prediction App */
+
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #0dcaf0;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+}
+
+/* Global Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #4c84ff 100%);
+    min-height: 80vh;
+}
+
+.min-vh-75 {
+    min-height: 75vh;
+}
+
+/* Feature Cards */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.feature-icon {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Tech Stack */
+.tech-item {
+    padding: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.tech-item:hover {
+    transform: scale(1.1);
+}
+
+/* Form Styles */
+.form-section {
+    background: var(--light-color);
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Result Cards */
+.result-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.probability-meter {
+    background: rgba(255,255,255,0.2);
+    border-radius: 25px;
+    height: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.probability-fill {
+    height: 100%;
+    border-radius: 25px;
+    transition: width 0.8s ease;
+}
+
+.risk-low { background: var(--success-color); }
+.risk-medium { background: var(--warning-color); }
+.risk-high { background: var(--danger-color); }
+
+/* Recommendations */
+.recommendation-item {
+    background: rgba(13, 110, 253, 0.1);
+    border-left: 4px solid var(--primary-color);
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0 8px 8px 0;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: 60vh;
+    }
+    
+    .display-4 {
+        font-size: 2.5rem;
+    }
+    
+    .feature-icon {
+        height: 60px;
+    }
+    
+    .tech-item {
+        margin-bottom: 2rem;
+    }
+}
+
+/* Loading Spinner */
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Navigation */
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+}
+
+.social-links a {
+    font-size: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: var(--primary-color) !important;
+}

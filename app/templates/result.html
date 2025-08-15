@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+
+{% block title %}Prediction Result{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Main Result Card -->
+            <div class="result-card p-5 mb-4 fade-in-up">
+                <div class="text-center">
+                    <h2 class="mb-4">
+                        <i class="fas fa-chart-bar me-2"></i>Churn Prediction Result
+                    </h2>
+                    
+                    <!-- Churn Probability -->
+                    <div class="row align-items-center mb-4">
+                        <div class="col-md-6">
+                            <h3 class="display-4 mb-0">{{ "%.1f" | format(prediction_proba * 100) }}%</h3>
+                            <p class="lead">Churn Probability</p>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="probability-meter mb-2">
+                                <div class="probability-fill risk-{{ risk_level }}" 
+                                     style="width: {{ prediction_proba * 100 }}%"></div>
+                            </div>
+                            <p class="mb-0">
+                                <span class="badge 
+                                    {% if risk_level == 'low' %}bg-success
+                                    {% elif risk_level == 'medium' %}bg-warning text-dark
+                                    {% else %}bg-danger
+                                    {% endif %} fs-6">
+                                    {{ risk_level.upper() }} RISK
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Prediction Interpretation -->
+                    <div class="alert 
+                        {% if risk_level == 'low' %}alert-success
+                        {% elif risk_level == 'medium' %}alert-warning
+                        {% else %}alert-danger
+                        {% endif %}" role="alert">
+                        <h5 class="alert-heading">
+                            {% if risk_level == 'low' %}
+                                <i class="fas fa-check-circle me-2"></i>Low Churn Risk
+                            {% elif risk_level == 'medium' %}
+                                <i class="fas fa-exclamation-triangle me-2"></i>Medium Churn Risk
+                            {% else %}
+                                <i class="fas fa-exclamation-circle me-2"></i>High Churn Risk
+                            {% endif %}
+                        </h5>
+                        <p class="mb-0">
+                            {% if risk_level == 'low' %}
+                                This customer has a low probability of churning. They appear to be satisfied with the services.
+                            {% elif risk_level == 'medium' %}
+                                This customer shows moderate signs of potential churn. Consider proactive engagement strategies.
+                            {% else %}
+                                This customer has a high probability of churning. Immediate intervention is recommended.
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Feature Importance -->
+            {% if feature_importance %}
+            <div class="card mb-4 fade-in-up">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-key me-2"></i>Key Factors Influencing Prediction
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for feature, importance in feature_importance %}
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold">{{ feature.replace('_', ' ').title() }}</span>
+                                <span class="badge bg-primary">{{ "%.1f" | format(importance * 100) }}%</span>
+                            </div>
+                            <div class="progress mt-1" style="height: 8px;">
+                                <div class="progress-bar" role="progressbar" 
+                                     style="width: {{ importance * 100 }}%" 
+                                     aria-valuenow="{{ importance * 100 }}" 
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Recommendations -->
+            <div class="card mb-4 fade-in-up">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-lightbulb me-2"></i>Recommended Actions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if risk_level == 'low' %}
+                        <div class="recommendation-item">
+                            <strong>Maintain Engagement:</strong> Continue providing excellent service to maintain customer satisfaction.
+                        </div>
+                        <div class="recommendation-item">
+                            <strong>Loyalty Programs:</strong> Consider enrolling this customer in loyalty programs to further strengthen retention.
+                        </div>
+                        <div class="recommendation-item">
+                            <strong>Upselling Opportunities:</strong> This stable customer might be receptive to additional services.
+                        </div>
+                    {% elif risk_level == 'medium' %}
+                        <div class="recommendation-item">
+                            <strong>Proactive Support:</strong> Reach out to understand any service concerns or issues.
+                        </div>
+                        <div class="recommendation-item">
+                            <strong>Service Review:</strong> Conduct a comprehensive review of their current service plan and usage.
+                        </div>
+                        <div class="recommendation-item">
+                            <strong>Incentives:</strong> Offer targeted promotions or discounts to improve satisfaction.
+                        </div>
+                        <div class="recommendation-item">
+                            <strong>Feedback Collection:</strong> Survey the customer to identify pain points and improvement areas.
+                        </div>
+                    {% else %}
+                        <div class="recommendation-item">
+                            <strong>Immediate Contact:</strong> Contact the customer within 24-48 hours to address concerns.
+                        </div>
+                        <div class="recommendation-item">
+                            <strong>Retention Specialist:</strong> Assign a dedicated retention specialist to this account.
+                        </div>
+                        <div class="recommendation-item">
+                            <strong>Special Offers:</strong> Provide significant discounts or service upgrades to retain the customer.
+                        </div>
+                        <div class="recommendation-item">
+                            <strong>Exit Interview:</strong> If retention fails, conduct an exit interview to understand reasons for leaving.
+                        </div>
+                        <div class="recommendation-item">
+                            <strong>Win-Back Campaign:</strong> Prepare a win-back campaign for future re-engagement if they do churn.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Customer Summary -->
+            <div class="card mb-4 fade-in-up">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-user me-2"></i>Customer Profile Summary
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li><strong>Tenure:</strong> {{ customer_data.get('tenure', 'N/A') }} months</li>
+                                <li><strong>Contract:</strong> {{ customer_data.get('contract', 'N/A') }}</li>
+                                <li><strong>Monthly Charges:</strong> ${{ "%.2f" | format(customer_data.get('monthly_charges', 0)) }}</li>
+                                <li><strong>Total Charges:</strong> ${{ "%.2f" | format(customer_data.get('total_charges', 0)) }}</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li><strong>Internet Service:</strong> {{ customer_data.get('internet_service', 'N/A') }}</li>
+                                <li><strong>Payment Method:</strong> {{ customer_data.get('payment_method', 'N/A') }}</li>
+                                <li><strong>Paperless Billing:</strong> {{ customer_data.get('paperless_billing', 'N/A') }}</li>
+                                <li><strong>Senior Citizen:</strong> {{ 'Yes' if customer_data.get('senior_citizen') == '1' else 'No' }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="text-center fade-in-up">
+                <a href="{{ url_for('predict') }}" class="btn btn-primary btn-lg me-3">
+                    <i class="fas fa-plus me-2"></i>New Prediction
+                </a>
+                <a href="{{ url_for('index') }}" class="btn btn-outline-primary btn-lg">
+                    <i class="fas fa-home me-2"></i>Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Export Options Modal -->
+<div class="modal fade" id="exportModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Export Prediction Report</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Export this prediction result for your records:</p>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-outline-primary" onclick="window.print()">
+                        <i class="fas fa-print me-2"></i>Print Report
+                    </button>
+                    <button class="btn btn-outline-success" onclick="exportToPDF()">
+                        <i class="fas fa-file-pdf me-2"></i>Export as PDF
+                    </button>
+                    <button class="btn btn-outline-info" onclick="exportToCSV()">
+                        <i class="fas fa-file-csv me-2"></i>Export as CSV
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Export functions
+    function exportToPDF() {
+        // This would integrate with a PDF generation library
+        alert('PDF export functionality would be implemented here');
+    }
+    
+    function exportToCSV() {
+        // This would export the prediction data as CSV
+        alert('CSV export functionality would be implemented here');
+    }
+    
+    // Animate the probability meter on page load
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            const meter = document.querySelector('.probability-fill');
+            meter.style.width = '0%';
+            setTimeout(function() {
+                meter.style.width = '{{ prediction_proba * 100 }}%';
+            }, 500);
+        }, 1000);
+    });
+</script>
+{% endblock %}
