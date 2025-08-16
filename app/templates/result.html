@@ -7,17 +7,21 @@
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <!-- Main Result Card -->
-            <div class="result-card p-5 mb-4 fade-in-up">
+            <div class="result-card bg-dark border border-secondary text-white p-5 mb-4 fade-in-up">
                 <div class="text-center">
-                    <h2 class="mb-4">
+                    <h2 class="mb-4 text-white">
                         <i class="fas fa-chart-bar me-2"></i>Churn Prediction Result
                     </h2>
                     
                     <!-- Churn Probability -->
                     <div class="row align-items-center mb-4">
                         <div class="col-md-6">
-                            <h3 class="display-4 mb-0">{{ "%.1f" | format(prediction_proba * 100) }}%</h3>
-                            <p class="lead">Churn Probability</p>
+                            <h3 class="display-4 mb-0 
+                                {% if risk_level == 'low' %}text-success
+                                {% elif risk_level == 'medium' %}text-warning
+                                {% else %}text-danger
+                                {% endif %}">{{ "%.1f" | format(prediction_proba * 100) }}%</h3>
+                            <p class="lead text-light">Churn Probability</p>
                         </div>
                         <div class="col-md-6">
                             <div class="probability-meter mb-2">
@@ -66,22 +70,22 @@
             
             <!-- Feature Importance -->
             {% if feature_importance %}
-            <div class="card mb-4 fade-in-up">
-                <div class="card-header">
-                    <h5 class="mb-0">
+            <div class="card bg-dark border border-secondary text-white mb-4 fade-in-up">
+                <div class="card-header bg-secondary border-bottom border-secondary">
+                    <h5 class="mb-0 text-white">
                         <i class="fas fa-key me-2"></i>Key Factors Influencing Prediction
                     </h5>
                 </div>
-                <div class="card-body">
+                <div class="card-body bg-dark">
                     <div class="row">
                         {% for feature, importance in feature_importance %}
                         <div class="col-md-6 mb-3">
                             <div class="d-flex justify-content-between align-items-center">
-                                <span class="fw-bold">{{ feature.replace('_', ' ').title() }}</span>
-                                <span class="badge bg-primary">{{ "%.1f" | format(importance * 100) }}%</span>
+                                <span class="fw-bold text-light">{{ feature.replace('_', ' ').title() }}</span>
+                                <span class="badge bg-warning text-dark">{{ "%.1f" | format(importance * 100) }}%</span>
                             </div>
                             <div class="progress mt-1" style="height: 8px;">
-                                <div class="progress-bar" role="progressbar" 
+                                <div class="progress-bar bg-warning" role="progressbar" 
                                      style="width: {{ importance * 100 }}%" 
                                      aria-valuenow="{{ importance * 100 }}" 
                                      aria-valuemin="0" aria-valuemax="100"></div>
@@ -94,79 +98,79 @@
             {% endif %}
             
             <!-- Recommendations -->
-            <div class="card mb-4 fade-in-up">
-                <div class="card-header">
-                    <h5 class="mb-0">
+            <div class="card bg-dark border border-secondary text-white mb-4 fade-in-up">
+                <div class="card-header bg-secondary border-bottom border-secondary">
+                    <h5 class="mb-0 text-white">
                         <i class="fas fa-lightbulb me-2"></i>Recommended Actions
                     </h5>
                 </div>
-                <div class="card-body">
+                <div class="card-body bg-dark">
                     {% if risk_level == 'low' %}
-                        <div class="recommendation-item">
-                            <strong>Maintain Engagement:</strong> Continue providing excellent service to maintain customer satisfaction.
+                        <div class="recommendation-item text-light mb-3">
+                            <strong class="text-warning">Maintain Engagement:</strong> Continue providing excellent service to maintain customer satisfaction.
                         </div>
-                        <div class="recommendation-item">
-                            <strong>Loyalty Programs:</strong> Consider enrolling this customer in loyalty programs to further strengthen retention.
+                        <div class="recommendation-item text-light mb-3">
+                            <strong class="text-warning">Loyalty Programs:</strong> Consider enrolling this customer in loyalty programs to further strengthen retention.
                         </div>
-                        <div class="recommendation-item">
-                            <strong>Upselling Opportunities:</strong> This stable customer might be receptive to additional services.
+                        <div class="recommendation-item text-light mb-3">
+                            <strong class="text-warning">Upselling Opportunities:</strong> This stable customer might be receptive to additional services.
                         </div>
                     {% elif risk_level == 'medium' %}
-                        <div class="recommendation-item">
-                            <strong>Proactive Support:</strong> Reach out to understand any service concerns or issues.
+                        <div class="recommendation-item text-light mb-3">
+                            <strong class="text-warning">Proactive Support:</strong> Reach out to understand any service concerns or issues.
                         </div>
-                        <div class="recommendation-item">
-                            <strong>Service Review:</strong> Conduct a comprehensive review of their current service plan and usage.
+                        <div class="recommendation-item text-light mb-3">
+                            <strong class="text-warning">Service Review:</strong> Conduct a comprehensive review of their current service plan and usage.
                         </div>
-                        <div class="recommendation-item">
-                            <strong>Incentives:</strong> Offer targeted promotions or discounts to improve satisfaction.
+                        <div class="recommendation-item text-light mb-3">
+                            <strong class="text-warning">Incentives:</strong> Offer targeted promotions or discounts to improve satisfaction.
                         </div>
-                        <div class="recommendation-item">
-                            <strong>Feedback Collection:</strong> Survey the customer to identify pain points and improvement areas.
+                        <div class="recommendation-item text-light mb-3">
+                            <strong class="text-warning">Feedback Collection:</strong> Survey the customer to identify pain points and improvement areas.
                         </div>
                     {% else %}
-                        <div class="recommendation-item">
-                            <strong>Immediate Contact:</strong> Contact the customer within 24-48 hours to address concerns.
+                        <div class="recommendation-item text-light mb-3">
+                            <strong class="text-warning">Immediate Contact:</strong> Contact the customer within 24-48 hours to address concerns.
                         </div>
-                        <div class="recommendation-item">
-                            <strong>Retention Specialist:</strong> Assign a dedicated retention specialist to this account.
+                        <div class="recommendation-item text-light mb-3">
+                            <strong class="text-warning">Retention Specialist:</strong> Assign a dedicated retention specialist to this account.
                         </div>
-                        <div class="recommendation-item">
-                            <strong>Special Offers:</strong> Provide significant discounts or service upgrades to retain the customer.
+                        <div class="recommendation-item text-light mb-3">
+                            <strong class="text-warning">Special Offers:</strong> Provide significant discounts or service upgrades to retain the customer.
                         </div>
-                        <div class="recommendation-item">
-                            <strong>Exit Interview:</strong> If retention fails, conduct an exit interview to understand reasons for leaving.
+                        <div class="recommendation-item text-light mb-3">
+                            <strong class="text-warning">Exit Interview:</strong> If retention fails, conduct an exit interview to understand reasons for leaving.
                         </div>
-                        <div class="recommendation-item">
-                            <strong>Win-Back Campaign:</strong> Prepare a win-back campaign for future re-engagement if they do churn.
+                        <div class="recommendation-item text-light mb-3">
+                            <strong class="text-warning">Win-Back Campaign:</strong> Prepare a win-back campaign for future re-engagement if they do churn.
                         </div>
                     {% endif %}
                 </div>
             </div>
             
             <!-- Customer Summary -->
-            <div class="card mb-4 fade-in-up">
-                <div class="card-header">
-                    <h5 class="mb-0">
+            <div class="card bg-dark border border-secondary text-white mb-4 fade-in-up">
+                <div class="card-header bg-secondary border-bottom border-secondary">
+                    <h5 class="mb-0 text-white">
                         <i class="fas fa-user me-2"></i>Customer Profile Summary
                     </h5>
                 </div>
-                <div class="card-body">
+                <div class="card-body bg-dark">
                     <div class="row">
                         <div class="col-md-6">
-                            <ul class="list-unstyled">
-                                <li><strong>Tenure:</strong> {{ customer_data.get('tenure', 'N/A') }} months</li>
-                                <li><strong>Contract:</strong> {{ customer_data.get('contract', 'N/A') }}</li>
-                                <li><strong>Monthly Charges:</strong> ${{ "%.2f" | format(customer_data.get('monthly_charges', 0)) }}</li>
-                                <li><strong>Total Charges:</strong> ${{ "%.2f" | format(customer_data.get('total_charges', 0)) }}</li>
+                            <ul class="list-unstyled text-light">
+                                <li><strong class="text-warning">Tenure:</strong> {{ customer_data.get('tenure', 'N/A') }} months</li>
+                                <li><strong class="text-warning">Contract:</strong> {{ customer_data.get('contract', 'N/A') }}</li>
+                                <li><strong class="text-warning">Monthly Charges:</strong> ${{ "%.2f" | format(customer_data.get('monthly_charges', 0)) }}</li>
+                                <li><strong class="text-warning">Total Charges:</strong> ${{ "%.2f" | format(customer_data.get('total_charges', 0)) }}</li>
                             </ul>
                         </div>
                         <div class="col-md-6">
-                            <ul class="list-unstyled">
-                                <li><strong>Internet Service:</strong> {{ customer_data.get('internet_service', 'N/A') }}</li>
-                                <li><strong>Payment Method:</strong> {{ customer_data.get('payment_method', 'N/A') }}</li>
-                                <li><strong>Paperless Billing:</strong> {{ customer_data.get('paperless_billing', 'N/A') }}</li>
-                                <li><strong>Senior Citizen:</strong> {{ 'Yes' if customer_data.get('senior_citizen') == '1' else 'No' }}</li>
+                            <ul class="list-unstyled text-light">
+                                <li><strong class="text-warning">Internet Service:</strong> {{ customer_data.get('internet_service', 'N/A') }}</li>
+                                <li><strong class="text-warning">Payment Method:</strong> {{ customer_data.get('payment_method', 'N/A') }}</li>
+                                <li><strong class="text-warning">Paperless Billing:</strong> {{ customer_data.get('paperless_billing', 'N/A') }}</li>
+                                <li><strong class="text-warning">Senior Citizen:</strong> {{ 'Yes' if customer_data.get('senior_citizen') == '1' else 'No' }}</li>
                             </ul>
                         </div>
                     </div>
@@ -175,10 +179,10 @@
             
             <!-- Action Buttons -->
             <div class="text-center fade-in-up">
-                <a href="{{ url_for('predict') }}" class="btn btn-primary btn-lg me-3">
+                <a href="{{ url_for('predict') }}" class="btn btn-warning btn-lg me-3">
                     <i class="fas fa-plus me-2"></i>New Prediction
                 </a>
-                <a href="{{ url_for('index') }}" class="btn btn-outline-primary btn-lg">
+                <a href="{{ url_for('index') }}" class="btn btn-outline-light btn-lg">
                     <i class="fas fa-home me-2"></i>Back to Home
                 </a>
             </div>

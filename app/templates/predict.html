@@ -8,7 +8,7 @@
         <div class="col-lg-8">
             <div class="form-section p-5 fade-in-up">
                 <h2 class="text-center mb-4">Customer Churn Prediction</h2>
-                <p class="text-muted text-center mb-5">Enter customer details to predict the likelihood of churn</p>
+                <p class="text-light text-center mb-5">Enter customer details to predict the likelihood of churn</p>
                 
                 <form id="prediction-form" method="POST">
                     <div class="row">
@@ -52,7 +52,7 @@
                         <div class="col-md-6 mb-3">
                             <label for="tenure" class="form-label">Tenure (months)</label>
                             <input type="number" class="form-control" id="tenure" name="tenure" min="0" max="100" required>
-                            <div class="form-text">Number of months the customer has stayed with the company</div>
+                            <div class="form-text text-light">Number of months the customer has stayed with the company</div>
                         </div>
                         
                         <!-- Service Information -->
@@ -180,19 +180,19 @@
                             <label for="monthly_charges" class="form-label">Monthly Charges ($)</label>
                             <input type="number" class="form-control" id="monthly_charges" name="monthly_charges" 
                                    step="0.01" min="0" max="200" required>
-                            <div class="form-text">Monthly charge amount in USD</div>
+                            <div class="form-text text-light">Monthly charge amount in USD</div>
                         </div>
                         
                         <div class="col-12 mb-3">
                             <label for="total_charges" class="form-label">Total Charges ($)</label>
                             <input type="number" class="form-control" id="total_charges" name="total_charges" 
                                    step="0.01" min="0" required>
-                            <div class="form-text">Total amount charged to date in USD</div>
+                            <div class="form-text text-light">Total amount charged to date in USD</div>
                         </div>
                     </div>
                     
                     <div class="d-grid gap-2 mt-4">
-                        <button type="submit" class="btn btn-primary btn-lg">
+                        <button type="submit" class="btn btn-warning btn-lg">
                             <i class="fas fa-chart-line me-2"></i>Predict Churn Probability
                         </button>
                     </div>
