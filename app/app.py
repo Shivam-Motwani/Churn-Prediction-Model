@@ -115,6 +115,7 @@ def train_simple_model():
     
     # Preprocessing
     # Encode categorical variables
+    global label_encoders
     label_encoders = {}
     for col in ['gender', 'partner', 'dependents', 'phone_service', 'multiple_lines',
                 'internet_service', 'online_security', 'online_backup', 'device_protection',
@@ -127,9 +128,11 @@ def train_simple_model():
     # Prepare features and target
     X = df.drop('churn', axis=1)
     y = df['churn']
+    global feature_names
     feature_names = list(X.columns)
     
     # Scale numerical features
+    global scaler
     scaler = StandardScaler()
     numerical_cols = ['tenure', 'monthly_charges', 'total_charges']
     X[numerical_cols] = scaler.fit_transform(X[numerical_cols])
@@ -137,10 +140,12 @@ def train_simple_model():
     print("Training model...")
     
     # Train model
+    global model
     model = RandomForestClassifier(n_estimators=100, random_state=42)
     model.fit(X, y)
     
     # Create target encoder
+    global target_encoder
     target_encoder = LabelEncoder()
     target_encoder.fit(['No', 'Yes'])
     
@@ -302,6 +307,14 @@ def predict():
             print(f"Processed input shape: {processed_input.shape}")
             print(f"Processed input type: {type(processed_input)}")
             print(f"Processed input columns: {processed_input.columns.tolist()}")
+            
+            # Ensure model is loaded
+            if model is None:
+                print("Model is None, attempting to retrain...")
+                train_simple_model()
+            
+            if model is None:
+                raise ValueError("Model could not be loaded or trained")
             
             # Make prediction using DataFrame to preserve feature names
             prediction_proba = model.predict_proba(processed_input)[0][1]
