@@ -17,7 +17,9 @@ app.secret_key = 'churn-prediction-secret-key-change-in-production'
 # Global variables for loaded model and preprocessors
 model = None
 scaler = None
-label_encoders = None
+label_encoders = {}
+target_encoder = None
+feature_names = None
 target_encoder = None
 feature_names = None
 
@@ -247,12 +249,17 @@ def preprocess_input(form_data):
         
         # Apply label encoding for categorical variables
         for col in df_input.select_dtypes(include=['object']).columns:
-            if col in label_encoders:
+            if label_encoders is not None and col in label_encoders:
                 try:
                     df_input[col] = label_encoders[col].transform(df_input[col])
                 except ValueError:
                     # Handle unseen categories by using the most common class (0)
                     df_input[col] = 0
+            else:
+                # If no label encoder available, convert to simple numeric
+                unique_values = df_input[col].unique()
+                for i, value in enumerate(unique_values):
+                    df_input.loc[df_input[col] == value, col] = i
         
         # Scale numerical features
         numerical_cols = ['tenure', 'monthly_charges', 'total_charges']
@@ -261,7 +268,7 @@ def preprocess_input(form_data):
             df_input[existing_numerical_cols] = scaler.transform(df_input[existing_numerical_cols])
         
         # Ensure all required features are present and in correct order
-        if feature_names:
+        if feature_names is not None:
             # Reorder columns to match training data
             df_input = df_input.reindex(columns=feature_names, fill_value=0)
         
