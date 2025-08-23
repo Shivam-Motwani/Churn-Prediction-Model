@@ -70,3 +70,6 @@ Interactive dashboard featuring:
 - Probability scores with confidence intervals
 - Feature importance visualization
 - Business recommendations
+
+## Contact
+Email : theoryofnumbers123@gmail.com
