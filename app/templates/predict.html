@@ -186,8 +186,14 @@
                         <div class="col-12 mb-3">
                             <label for="total_charges" class="form-label">Total Charges ($)</label>
                             <input type="number" class="form-control" id="total_charges" name="total_charges" 
-                                   step="0.01" min="0" required>
-                            <div class="form-text text-light">Total amount charged to date in USD</div>
+                                   step="0.01" min="0" required readonly>
+                            <div class="form-text text-light">Automatically calculated as Tenure × Monthly Charges</div>
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" id="manual_total_charges">
+                                <label class="form-check-label text-light" for="manual_total_charges">
+                                    Manually edit total charges
+                                </label>
+                            </div>
                         </div>
                     </div>
                     
@@ -228,20 +234,40 @@
     // Auto-calculate total charges based on tenure and monthly charges
     document.getElementById('tenure').addEventListener('input', calculateTotalCharges);
     document.getElementById('monthly_charges').addEventListener('input', calculateTotalCharges);
+    
+    // Handle manual total charges checkbox
+    document.getElementById('manual_total_charges').addEventListener('change', function() {
+        const totalChargesField = document.getElementById('total_charges');
+        if (this.checked) {
+            totalChargesField.removeAttribute('readonly');
+            totalChargesField.focus();
+        } else {
+            totalChargesField.setAttribute('readonly', true);
+            calculateTotalCharges(); // Recalculate when switching back to auto
+        }
+    });
 
     function calculateTotalCharges() {
         const tenure = parseFloat(document.getElementById('tenure').value) || 0;
         const monthlyCharges = parseFloat(document.getElementById('monthly_charges').value) || 0;
+        const totalChargesField = document.getElementById('total_charges');
+        const manualCheckbox = document.getElementById('manual_total_charges');
         
-        if (tenure > 0 && monthlyCharges > 0) {
-            const estimatedTotal = tenure * monthlyCharges;
-            const totalChargesField = document.getElementById('total_charges');
-            
-            if (!totalChargesField.value || totalChargesField.value == 0) {
-                totalChargesField.value = estimatedTotal.toFixed(2);
+        // Only auto-calculate if manual editing is not enabled
+        if (!manualCheckbox.checked) {
+            if (tenure >= 0 && monthlyCharges >= 0) {
+                const calculatedTotal = tenure * monthlyCharges;
+                totalChargesField.value = calculatedTotal.toFixed(2);
+            } else {
+                totalChargesField.value = '0.00';
             }
         }
     }
+    
+    // Initialize calculation on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        calculateTotalCharges();
+    });
 
     // Form validation feedback
     (function() {

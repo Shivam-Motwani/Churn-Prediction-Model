@@ -162,7 +162,6 @@
                                 <li><strong class="text-warning">Tenure:</strong> {{ customer_data.get('tenure', 'N/A') }} months</li>
                                 <li><strong class="text-warning">Contract:</strong> {{ customer_data.get('contract', 'N/A') }}</li>
                                 <li><strong class="text-warning">Monthly Charges:</strong> ${{ "%.2f" | format(customer_data.get('monthly_charges', 0)) }}</li>
-                                <li><strong class="text-warning">Total Charges:</strong> ${{ "%.2f" | format(customer_data.get('total_charges', 0)) }}</li>
                             </ul>
                         </div>
                         <div class="col-md-6">
